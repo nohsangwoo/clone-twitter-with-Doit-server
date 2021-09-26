@@ -29,14 +29,17 @@ httpServer.listen(PORT, () => console.log(`server is running on port ${PORT}`));
 // 그정보를 브라우저에서 인식한 이후 백엔드의 응답을 거부하지 않고 허용한다.
 
 const URL_FOR_CORS =
-  process.env.NODE_ENV === 'dev'
-    ? 'http://localhost:3000'
-    : process.env.CLIENT_URL;
+  process.env.NODE_ENV === 'prod'
+    ? process.env.CLIENT_URL
+    : 'http://localhost:3000';
+
+console.log('URL_FOR_CORS', URL_FOR_CORS);
 
 const io = new Server(httpServer, {
   // cors설정도 해줌
   cors: {
-    origin: ['https://admin.socket.io', URL_FOR_CORS],
+    // origin: ['https://admin.socket.io', URL_FOR_CORS],
+    origin: ['https://admin.socket.io', process.env.CLIENT_URL],
     methods: ['GET', 'POST'],
     credentials: true,
   },
